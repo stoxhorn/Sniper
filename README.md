@@ -2,7 +2,7 @@
 
 SCript that reads through every new block for added liquidity of specified token.
 
-User's address and api-key is specified in the user_data.txt file, for each respective network. 
+User's address and api-key is specified in the user_data.txt file.
 
 Currently only works from command-line
 
