@@ -1,0 +1,23 @@
+# Any lines with # in front will be ignored
+# Be 100% sure there's at least one space between the = and the data behind it
+# be 100% sure there's no spaces or any other characters after the data.
+# an example for valid address data:
+# address = 0x12345678912345678989
+# nothing after the last 9
+# your wallet's address
+address = 
+
+# your API key of your address, DON'T share this with anyone,
+# or EVER type it into a machine you suspect could have a keylogger on it
+key = 
+
+# gas price is measured in gwei, same unit as left side in gas management in metamask
+# please keep in mind this won't be the gas price paid to approve a token to sell
+BSC gas price = 40
+POLY gas price = 100
+
+BSC wss node API =
+BSC HTTP node API =
+
+POLY wss node API =
+POLY HTTP node API =
