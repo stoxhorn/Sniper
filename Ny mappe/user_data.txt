@@ -22,4 +22,4 @@ POLY low gas price = 10
 
 # Same format for Node API URL. Type the entire thing out, with nothing following it. 
 BSC HTTP node API = https://bsc-dataseed1.binance.org:443
-POLY HTTP node API = 
+POLY HTTP node API = https://billowing-muddy-glade.bsc.quiknode.pro/0c1d1395d189ab42e9a03901bed0ff61a6b9e774/

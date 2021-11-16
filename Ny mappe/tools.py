@@ -8,10 +8,13 @@ from web3.middleware import geth_poa_middleware
 from hexbytes import HexBytes as hb
 from datetime import datetime
 
-if __package__ is None or __package__ == '':
+from bsc_sniper import BSC_sniper
+from poly_sniper import POLY_sniper
+
+#if __package__ is None or __package__ == '':
     # uses current directory visibility
-    from bsc_sniper import BSC_sniper
-    from poly_sniper import POLY_sniper
+ #   from bsc_sniper import BSC_sniper
+  #  from poly_sniper import POLY_sniper
 
 
 class Tools:    # future plans:
