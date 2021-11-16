@@ -18,28 +18,23 @@ class Tools:    # future plans:
     #       a list of open transactions ready to send. 
     #       a list of "open" functions ready to send. 
 
-    def __init__(self, key, address):
+    def __init__(self, key, address, BSC_url, POLY_url):
         self.key = key
         print(address)
         self.address = Web3.toChecksumAddress(address)
 
         self.w3 = self.load_w3()
-        self.BSC_sniper = BSC_sniper(self.key, self.address, False, True)
-        self.POLY_sniper = POLY_sniper(self.key, self.address)
+        self.BSC_sniper = BSC_sniper(self.key, self.address, BSC_url, False, True)
+        self.POLY_sniper = POLY_sniper(self.key, self.address, POLY_url)
 
 # ----- load of web3     
-    # keeping this, as it could be needed for other class objects for copy paste
+    # keeping this, as it could be needed for other class objects for copy paste 
+    # also need the w3 object for toChecksumAddress() calls
     def load_w3(self):
         
-        # address = Web3.toChecksumAddress("0x9c8619590014D54AD9B6121dec82fF0EC949F47c")
-        infuraURL = 'https://ropsten.infura.io/v3/5e6b8f6488cd4888bf64fab582e37b6c'
-        infuraWSS = 'wss://mainnet.infura.io/ws/v3/5e6b8f6488cd4888bf64fab582e37b6c'
-        #Web3(Web3.WebsocketProvider())
-
-        bscTURL = 'https://data-seed-prebsc-1-s1.binance.org:8545'
         bscURL = 'https://bsc-dataseed1.binance.org:443'
 
-        return Web3(Web3.HTTPProvider(bscTURL))
+        return Web3(Web3.HTTPProvider(bscURL))
 
     # buys a token on pancakeswap and afterwards calls approve spender
     def PCS_buy_token(self, token, val):
@@ -161,3 +156,29 @@ class Tools:    # future plans:
     def set_POLY_high_gas_price(self, val):
         self.POLY_sniper.set_high_gas_price(val)
 
+    def get_POLY_high_gas_price(self):
+        return self.POLY_sniper.get_high_gas_price()
+
+    def set_POLY_low_gas_price(self, val):
+        self.POLY_sniper.set_low_gas_price(val)
+
+    def get_POLY_low_gas_price(self):
+        return self.POLY_sniper.get_low_gas_price()
+    
+    def set_POLY_gas_limit(self, val):
+        self.POLY_sniper.set_gas_limit(val)
+
+    def get_POLY_gas_limit(self):
+        return self.POLY_sniper.get_gas_limit()
+    
+    def set_POLY_address(self, val):
+        self.POLY_sniper.set_address(val)
+
+    def get_POLY_address(self):
+        return self.POLY_sniper.get_address()
+
+    def set_POLY_key(self, val):
+        self.POLY_sniper.set_key(val)
+
+    def get_POLY_key(self):
+        return self.POLY_sniper.get_key()

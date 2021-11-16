@@ -17,9 +17,11 @@ class sniper_interface:
         self.address = data[0]
         self.key = data[1]
         self.sell = False
-        self.tools = Tools(self.key, self.address)
+        self.tools = Tools(self.key, self.address, data[6], data[7])
         self.tools.set_bsc_high_gas_price(data[2])
-        self.tools.set_POLY_high_gas_price(data[3])
+        self.tools.set_bsc_low_gas_price(data[3])
+        self.tools.set_POLY_high_gas_price(data[4])
+        self.tools.set_POLY_low_gas_price(data[5])
 
     def start_program(self):
         print("Hello, madpacket LP sniper starting\n")
@@ -27,13 +29,14 @@ class sniper_interface:
         self.start_sniper()
 
     def start_sniper(self):
-        cmd = input("BSC buying/sniping, 'b', Polygon buying/sniping, 'p', options, 'o'\n")
-        
+        cmd = input("BSC buying/sniping, 'b', Polygon buying/sniping, 'p', options + add key/address, 'o'\n")
+
         if cmd == 'o':
             self.ask_key_address()
             self.ask_router()
             self.ask_edit_gas()
             self.ask_network()
+            self.start_sniper()
         elif cmd == 'b' or cmd == ' ':
             self.network = 'BSC'
             loop = True
@@ -76,7 +79,7 @@ class sniper_interface:
 
 # ----- functions reading txt file for user-data
     def read_user(self):
-        data = [None, None, None, None]
+        data = [None, None, None, None, None, None, None, None]
         with open('user_data.txt') as f:
             lines = f.readlines()
             for line in lines:
@@ -89,10 +92,18 @@ class sniper_interface:
                         data[0] = line[10:-1]
                     elif line[:3] == 'key':
                         data[1] = line[6:-1]
-                    elif line[:13] == 'BSC gas price':
-                        data[2] = line[16:-1]
-                    elif line[:14] == 'POLY gas price':
-                        data[3] = line[17:-1]
+                    elif line[:18] == 'BSC high gas price':
+                        data[2] = line[21:-1]
+                    elif line[:17] == 'BSC low gas price':
+                        data[3] = line[20:-1]
+                    elif line[:19] == 'POLY high gas price':
+                        data[4] = line[22:-1]
+                    elif line[:18] == 'POLY low gas price':
+                        data[5] = line[21:-1]
+                    elif line[:17] == 'BSC HTTP node API':
+                        data[6] = line[20:-1]
+                    elif line[:18] == 'POLY HTTP node API':
+                        data[7] = line[21:-1]
                     else:
                         pass
         return data
@@ -235,17 +246,41 @@ class sniper_interface:
                 pass
         
         if edit_gas_bool:
-            high_price = input("what should be the gwei price for high cost transactions? integer numbers only\nBuy transactions\n")
+            bool = True
+            while(bool):
+                network = input("What network? b = BSC, p = Polygon\n")
+                if network == "b":
+                    bool = False
+                elif network == "p":
+                    bool = False
+                else:
+                    print("Sorry, did not understand input\n")
+
+
+            high_price = input("what should be the gwei price for high cost transactions? integer numbers only\nBuy and sell transactions\n")
             tmp = int(high_price)
-            self.tools.set_high_gas_price(tmp)
-            
-            low_price = input("what should be the gwei price for low cost transactions? integer numbers only\nApprove selling transaction\n")
+
+            if network == "b":
+                self.tools.set_bsc_high_gas_price(tmp)
+            elif network == "p":
+                self.tools.set_POLY_high_gas_price(tmp)
+
+            low_price = input("what should be the gwei price for low cost transactions? integer numbers only\nApprove token transaction\n")
             tmp = int(low_price)
-            self.tools.set_low_gas_price(tmp)
             
+            if network == "b":
+                self.tools.set_bsc_low_gas_price(tmp)
+            elif network == "p":
+                self.tools.set_POLY_low_gas_price(tmp)
+
             gas_limit = input("what should be the gas limit? integer numbers only\n")
             tmp = int(gas_limit)
-            self.tools.set_gas_limit(tmp)
+            
+            if network == "b":
+                self.tools.set_bsc_gas_limit(tmp)
+            elif network == "p":
+                self.tools.set_POLY_gas_limit(tmp)
+
         else:
             pass
 

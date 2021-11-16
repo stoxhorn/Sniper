@@ -7,17 +7,19 @@
 # your wallet's address
 address = 
 
-# your API key of your address, DON'T share this with anyone,
+# your private key of your address, DON'T share this with anyone,
 # or EVER type it into a machine you suspect could have a keylogger on it
+# Also, same format as with address, one blank after "=" and then ur private key, with nothing after
 key = 
 
 # gas price is measured in gwei, same unit as left side in gas management in metamask
 # please keep in mind this won't be the gas price paid to approve a token to sell
-BSC gas price = 40
-POLY gas price = 100
+# same format here as well
+BSC high gas price = 10
+BSC low gas price = 10 
+POLY high gas price = 10
+POLY low gas price = 10
 
-BSC wss node API =
-BSC HTTP node API =
-
-POLY wss node API =
-POLY HTTP node API =
+# Same format for Node API URL. Type the entire thing out, with nothing following it. 
+BSC HTTP node API = https://bsc-dataseed1.binance.org:443
+POLY HTTP node API = 

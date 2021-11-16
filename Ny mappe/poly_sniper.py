@@ -11,18 +11,21 @@ from time import ctime
 import copy
 
 # TODO spot dxsale listings
-# test txn_hash https://bscscan.com/tx/0xa7766c5f718df153dc717d05e318e1ac1c0fb7c043ad05365491d656f1b9962d
+
 
 class POLY_sniper:
         # address = Web3.toChecksumAddress('')
         
-    def __init__(self, key, address):
+    def __init__(self, key, address, node_url):
         # Loads real or test network of BSC
         #self.w3 = self.load_w3(test_network)
+        
+        self.node_url = node_url
         self.w3 = self.load_w3()
         #self.w32 = self.load_w32(test_network)
 
         self.gas_limit = 500000
+
         
         # value of own private metamask keyu
         self.key = key
@@ -37,8 +40,6 @@ class POLY_sniper:
         self.QS_address = '0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff'
 
         # 100 gwei was at 500 000 gwei_limit about 0.5dkk
-        self.high_gas_price = self.w3.toWei('100', 'gwei')    
-        self.low_gas_price = self.w3.toWei('5', 'gwei')    
         
 
         # flag for being able to cancel snipipng
@@ -288,10 +289,7 @@ class POLY_sniper:
     will load testnetwork, if specified
     '''
     def load_w3(self):
-        #Web3(Web3.WebsocketProvider())
-        polygon_quicknode_wss = 'wss://crimson-red-snowflake.matic.quiknode.pro/38b6e627d7236e2f4187ff9e385de21082177532/'
-        polygon_quicknode_HTTP = 'https://crimson-red-snowflake.matic.quiknode.pro/38b6e627d7236e2f4187ff9e385de21082177532/'
-        return Web3(Web3.HTTPProvider(polygon_quicknode_HTTP)) # Web3(Web3.WebsocketProvider(polygon_quicknode_wss)) #
+        return Web3(Web3.HTTPProvider(self.node_url))
 
     
     '''

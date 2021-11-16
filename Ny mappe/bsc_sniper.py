@@ -10,16 +10,18 @@ from time import ctime
 import copy
 
 # TODO spot dxsale listings
-# test txn_hash https://bscscan.com/tx/0xa7766c5f718df153dc717d05e318e1ac1c0fb7c043ad05365491d656f1b9962d
 
 class BSC_sniper:
         # address = Web3.toChecksumAddress('')
         
-    def __init__(self, key, address, test_network = False, version_2 = True):
+    def __init__(self, key, address, new_http_url, test_network = False, version_2 = True):
         # Loads real or test network of BSC
         #self.w3 = self.load_w3(test_network)
-        self.w3 = self.load_w3_wss()
+        
         #self.w32 = self.load_w32(test_network)
+        self.http_url = new_http_url
+        self.wss_url = "empty"
+        self.w3 = self.load_w3()
 
         self.gas_limit = 400000
         
@@ -40,8 +42,6 @@ class BSC_sniper:
 
         self.current_router = 2
 
-        self.high_gas_price = self.w3.toWei('25', 'gwei')    
-        self.low_gas_price = self.w3.toWei('10', 'gwei')    
         
         # this was needed to read BSC blocks
         
@@ -348,18 +348,11 @@ class BSC_sniper:
     initializes the web3 object
     will load testnetwork, if specified
     '''
-    def load_w3(self, test_network):
-        #Web3(Web3.WebsocketProvider())
-        bscTURL = 'https://data-seed-prebsc-1-s1.binance.org:8545'
-        bscURL = 'https://bsc-dataseed1.binance.org:443'
-        getBlockURL = 'wss://bsc.getblock.io/mainnet/ws/api/ed6d727e-31b5-4dee-9879-2447cfab0819'
-        quicknodeURL = 'wss://billowing-muddy-glade.bsc.quiknode.pro/0c1d1395d189ab42e9a03901bed0ff61a6b9e774/'
-        quicknodeHTTP = 'https://billowing-muddy-glade.bsc.quiknode.pro/0c1d1395d189ab42e9a03901bed0ff61a6b9e774/'
-        #ws3 = Web3(Web3.WebsocketProvider(infura_url_ws,request_kwargs={'timeout':60}))
-
+    def load_w3(self, test_network = False):
+        
         if not test_network:
-            tmp = Web3(Web3.WebsocketProvider(quicknodeURL))
-            #tmp = Web3(Web3.HTTPProvider(quicknodeHTTP))
+            #tmp = Web3(Web3.WebsocketProvider(self.wss_url))
+            tmp = Web3(Web3.HTTPProvider(self.http_url))
             if tmp.isConnected():
                 print("connected to BSC network\n")
             else:
@@ -370,12 +363,10 @@ class BSC_sniper:
 
         elif test_network:
             print("connected to BSC TEST! network\n")
-            return Web3(Web3.HTTPProvider(bscTURL))
+            return Web3(Web3.HTTPProvider(self.bscTURL))
 
     def load_w3_wss(self):
-        quicknodeURL = 'wss://billowing-muddy-glade.bsc.quiknode.pro/0c1d1395d189ab42e9a03901bed0ff61a6b9e774/'
-        quicknodeHTTP = 'https://billowing-muddy-glade.bsc.quiknode.pro/0c1d1395d189ab42e9a03901bed0ff61a6b9e774/'
-        return Web3(Web3.WebsocketProvider(quicknodeURL, websocket_kwargs = {'ping_interval':None})) # Web3(Web3.HTTPProvider(quicknodeHTTP))
+        return Web3(Web3.WebsocketProvider(self.wss_url, websocket_kwargs = {'ping_interval':None})) # Web3(Web3.HTTPProvider(quicknodeHTTP))
     
     '''
     Loads the token ABI from an old testtoken
